@@ -65,15 +65,6 @@ class DiceSetTests(unittest.TestCase):
         self.assertEqual([die.get_current_value()
                          for die in dice_set.dice], dice_set.get_current_values())
 
-    def test_dice_set_matches(self):
-        dice_set_1 = DiceSet(6, 5)
-        dice_set_2 = DiceSet(6, 5)
-        self.assertTrue(dice_set_1.matches(dice_set_2))
-        dice_set_1.dice = [Die(i, 6) for i in range(1, 6)]
-        self.assertFalse(dice_set_1.matches(dice_set_2))
-        dice_set_2.dice = [Die(5 - i, 6) for i in range(5)]
-        self.assertTrue(dice_set_1.matches(dice_set_2))
-
     def test_dice_set_str(self):
         dice_set = DiceSet(6, 5)
         self.assertEqual(str(dice_set), "[1][1][1][1][1]")
@@ -85,6 +76,17 @@ class DiceSetTests(unittest.TestCase):
             dice_set.dice[3].get_current_value(),
             dice_set.dice[4].get_current_value(),
         ))
+
+
+class ExtraCreditTests(unittest.TestCase):
+    def test_dice_set_matches(self):
+        dice_set_1 = DiceSet(6, 5)
+        dice_set_2 = DiceSet(6, 5)
+        self.assertTrue(dice_set_1.matches(dice_set_2))
+        dice_set_1.dice = [Die(i, 6) for i in range(1, 6)]
+        self.assertFalse(dice_set_1.matches(dice_set_2))
+        dice_set_2.dice = [Die(5 - i, 6) for i in range(5)]
+        self.assertTrue(dice_set_1.matches(dice_set_2))
 
 
 if __name__ == '__main__':

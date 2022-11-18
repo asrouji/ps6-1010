@@ -101,7 +101,8 @@ class DiceSet():
     """
 
     def matches(self, dice_set):
-        return self.get_descriptor() == dice_set.get_descriptor() and sorted(self.get_current_values()) == sorted(dice_set.get_current_values())
+        pass
+        # return self.get_descriptor() == dice_set.get_descriptor() and sorted(self.get_current_values()) == sorted(dice_set.get_current_values())
 
     """
     Returns a string representation in which each of the die strings are
