@@ -78,7 +78,7 @@ class DiceSet():
         """
         Returns the total of the values of each die in the set.
         """
-        return sum([die.get_current_value() for die in self.dice])
+        return sum(self.get_current_values())
 
     def roll_all(self):
         """
