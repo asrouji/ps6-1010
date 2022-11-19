@@ -27,11 +27,12 @@ class Die():
 
     def roll(self):
         """
-        Simulates a roll by randomly updating the value of this die. 
-        In addition to mutating the die's value, this method also 
+        Simulates a roll by randomly updating the value of this die.
+        In addition to mutating the die's value, this method also
         returns the new updated value.
         """
         self.value = randint(1, self.sides)
+        return self.value
 
     def get_number_sides(self):
         """
@@ -73,7 +74,6 @@ class DiceSet():
         """
         return str(len(self.dice)) + "d" + str(self.dice[0].get_number_sides())
 
-    # Returns the total of the values of each die in the set.
     def get_total(self):
         """
         Returns the total of the values of each die in the set.
@@ -82,15 +82,17 @@ class DiceSet():
 
     def roll_all(self):
         """
-        Rolls all of the dice in the set.
+        Rolls all of the dice in the set, and returns the total of the new values.
         """
-        [die.roll() for die in self.dice]
+        for die in self.dice:
+            die.roll()
+        return self.get_total()
 
     def roll_die(self, i):
         """
-        Rolls the die at the given index in the set.
+        Rolls the die at the given index in the set, and returns the new value.
         """
-        self.dice[i].roll()
+        return self.dice[i].roll()
 
     def get_current_values(self):
         """
@@ -130,33 +132,43 @@ class HighRollerGame():
         self.dice_set = DiceSet(6, 5)
         self.highest_total = self.dice_set.get_total()
 
-    def run_command(self, command, args=[]):
+    def run_command(self, command):
         """
-        Called after the player enters a command. This method accepts two arguments:
-        - command: the first word of the given command (e.g. "roll", "use", "help", etc.)
-        - args: list of command arguments (e.g. ["5", "4"] for "use 5 4" or ["all"] for "roll all")
+        Called after the player inputs a command. You are to implement the following commands:
+        * `h` or `help` : Print a help message, showing commands the player can use.
+        * (optional) `q` or `quit`: Quits the program, but prints a nice message before just before quitting.
+        * `use <s> <n>` : Obtain a new set of dice. Here <n> is the number of dice, and <s> is the number of sides for each die in the set. Prints the descriptor of dice set just obtained and the dice set too.
+        * `roll all`: Rolls all the dice, then prints the dice set.
+        * `roll <i>`: Rolls the i-th die in the set, then prints the dice set.
+        * (optional) high or highest: Prints the highest roll so far.
+
+        Implementation Hints:
+        * You can use the string `split()` method to split a string into a list of words.
+        * Don't use `input()` here! The input has already been read and passed to this method.
+        * Implementing `quit`? See the `exit()` function imported above.
         """
-        match command:
-            case "roll":
-                if args[0] == "all":
-                    self.dice_set.roll_all()
-                else:
-                    self.dice_set.roll_die(int(args[0]))
-                print(self.dice_set)
-            case "use":
-                self.dice_set = DiceSet(int(args[0]), int(args[1]))
+        match command.split():
+            case ["h" | "help"]:
+                print(
+                    "Commands: h or help, q or quit, use <s> <n>, roll all, roll <i>, high or highest")
+            case ["q" | "quit"]:
+                print("Thanks for playing!")
+                exit(0)
+            case ["use", sides_each_die, number_of_dice]:
+                self.dice_set = DiceSet(
+                    int(sides_each_die), int(number_of_dice))
                 print(self.dice_set.get_descriptor())
                 print(self.dice_set)
-            case "highest":
-                print(f'Highest score so far: {self.highest_total}')
-            case "help":
-                print(
-                    "Commands: roll all, roll <die>, use <sides> <count>, highest, help, quit")
-            case "quit":
-                print("Goodbye!")
-                exit()
+            case ["roll", "all"]:
+                print(self.dice_set.roll_all())
+                print(self.dice_set)
+            case ["roll", index]:
+                self.dice_set.roll_die(int(index))
+                print(self.dice_set)
+            case ["high" | "highest"]:
+                print(self.highest_total)
             case _:
-                print("Unknown command")
+                print("Invalid command")
         if self.dice_set.get_total() > self.highest_total:
             self.highest_total = self.dice_set.get_total()
 
@@ -167,8 +179,8 @@ class HighRollerGame():
         """
         print("Welcome to High Roller Game!")
         while True:
-            command, *args = input("Enter a command: ").split()
-            self.run_command(command, args)
+            player_input = input("Enter a command: ")
+            self.run_command(player_input)
 
 
 if __name__ == "__main__":

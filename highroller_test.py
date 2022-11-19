@@ -12,8 +12,9 @@ class DieTests(unittest.TestCase):
 
     def test_die_roll(self):
         die = Die(1, 6)
-        die.roll()
+        new_val = die.roll()
         self.assertTrue(1 <= die.value <= 6)
+        self.assertEqual(new_val, die.value)
 
     def test_die_getters(self):
         die = Die(5, 6)
@@ -54,17 +55,14 @@ class DiceSetTests(unittest.TestCase):
 
     def test_dice_set_roll_all(self):
         dice_set = DiceSet(6, 5)
-        dice_set.roll_all()
-        self.assertEqual(dice_set.get_total(), sum(
-            [die.value for die in dice_set.dice]))
+        sum = dice_set.roll_all()
+        self.assertEqual(dice_set.get_total(), sum)
 
     def test_dice_set_roll_die(self):
         dice_set = DiceSet(6, 5)
-        old_dice_values = [die.get_current_value() for die in dice_set.dice]
-        dice_set.roll_die(0)
-        for i in range(1, 5):
-            self.assertEqual(
-                old_dice_values[i], dice_set.dice[i].value)
+        for i in range(0, 5):
+            new_val = dice_set.roll_die(i)
+            self.assertEqual(new_val, dice_set.dice[i].value)
 
     def test_dice_set_get_values(self):
         dice_set = DiceSet(6, 5)
@@ -99,25 +97,25 @@ class HighRollerGameTests(unittest.TestCase):
 
     def test_roll_one(self):
         game = HighRollerGame()
-        game.run_command("roll", ["2"])
+        game.run_command("roll 2")
         self.assertEqual(game.dice_set.get_total(), sum(
             [die.value for die in game.dice_set.dice]))
 
     def test_roll_all(self):
         game = HighRollerGame()
-        game.run_command("roll", ["all"])
+        game.run_command("roll all")
         self.assertEqual(game.dice_set.get_total(), sum(
             [die.value for die in game.dice_set.dice]))
 
     def test_use(self):
         game = HighRollerGame()
-        game.run_command("use", ["20", "1"])
+        game.run_command("use 20 1")
         self.assertEqual(len(game.dice_set.dice), 1)
         self.assertEqual(game.dice_set.get_descriptor(), "1d20")
         for die in game.dice_set.dice:
             self.assertEqual(die.get_number_sides(), 20)
 
-    def test_unknown_command(self):
+    def test_invalid_cmd(self):
         game = HighRollerGame()
         dice = list(game.dice_set.dice)
         game.run_command("unknown")
@@ -155,12 +153,12 @@ class ExtraCreditTests(unittest.TestCase):
         game.run_command("highest")
         self.assertEqual(game.highest_total, best_score)
 
-        game.run_command("roll", ["all"])
+        game.run_command("roll all")
         best_score = game.dice_set.get_total()
         self.assertEqual(game.highest_total, best_score)
 
-        game.run_command("use", ["6", "50"])
-        game.run_command("roll", ["all"])
+        game.run_command("use 6 50")
+        game.run_command("roll all")
         best_score = game.dice_set.get_total()
         self.assertEqual(game.highest_total, best_score)
 
