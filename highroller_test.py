@@ -56,6 +56,7 @@ class DiceSetTests(unittest.TestCase):
     def test_dice_set_roll_all(self):
         dice_set = DiceSet(6, 5)
         sum = dice_set.roll_all()
+        self.assertIsNotNone(sum)
         self.assertEqual(dice_set.get_total(), sum)
 
     def test_dice_set_roll_die(self):
