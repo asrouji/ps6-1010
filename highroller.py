@@ -22,8 +22,8 @@ class Die():
         - self.value: starting value of the die, given by parameter initial_value
         - self.sides: number of sides of the die, given by parameter sides
         """
-        self.value = initial_value
-        self.sides = sides
+        self.value = None  # TODO: set the value of this die
+        self.sides = None  # TODO: set the number of sides
 
     def roll(self):
         """
@@ -31,27 +31,26 @@ class Die():
         In addition to mutating the die's value, this method also
         returns the new updated value.
         """
-        self.value = randint(1, self.sides)
-        return self.value
+        pass
 
     def get_number_sides(self):
         """
         Returns the number of sides of this die.
         """
-        return self.sides
+        pass
 
     def get_current_value(self):
         """
         Returns the current value of this die.
         """
-        return self.value
+        pass
 
     def __str__(self):
         """
         Returns a string representation of this die, which is its value enclosed in square
         brackets, without spaces, for example "[5]".
         """
-        return "[{}]".format(self.value)
+        pass
 
 
 class DiceSet():
@@ -65,40 +64,38 @@ class DiceSet():
         Creates a new DiceSet. This constructor should initialize the following attributes:
         - self.dice: a list of Die objects, each with the given number of sides
         """
-        self.dice = [Die(1, sides_each_die) for _ in range(number_of_dice)]
+        self.dice = None  # TODO: create a list of dice with the given number of sides and number of dice
 
     def get_descriptor(self):
         """
         Returns the descriptor of the dice set; for example "5d20" for a set with
         five dice of 20 sides each; or "2d6" for a set of two six-sided dice.
         """
-        return str(len(self.dice)) + "d" + str(self.dice[0].get_number_sides())
+        pass
 
     def get_total(self):
         """
         Returns the total of the values of each die in the set.
         """
-        return sum([die.get_current_value() for die in self.dice])
+        pass
 
     def roll_all(self):
         """
         Rolls all of the dice in the set, and returns the total of the new values.
         """
-        for die in self.dice:
-            die.roll()
-        return self.get_total()
+        pass
 
     def roll_die(self, i):
         """
         Rolls the die at the given index in the set, and returns the new value.
         """
-        return self.dice[i].roll()
+        pass
 
     def get_current_values(self):
         """
         Returns a list of the current values of each die in the set.
         """
-        return [die.get_current_value() for die in self.dice]
+        pass
 
     def matches(self, dice_set):
         """
@@ -107,14 +104,14 @@ class DiceSet():
         and the same number of sides per dice, and there must be the same
         number of each value in each set.
         """
-        return self.get_descriptor() == dice_set.get_descriptor() and sorted(self.get_current_values()) == sorted(dice_set.get_current_values())
+        pass
 
     def __str__(self):
         """
         Returns a string representation in which each of the die strings are
         joined without a separator, for example: "[2][5][2][3]".
         """
-        return "".join([str(die) for die in self.dice])
+        pass
 
 
 class HighRollerGame():
@@ -129,8 +126,8 @@ class HighRollerGame():
         - self.dice_set: a DiceSet containing 5 dice with 6 sides each
         - (Optional) self.highest_total: the highest dice total so far, initialized as the total of the initial dice set
         """
-        self.dice_set = DiceSet(6, 5)
-        self.highest_total = self.dice_set.get_total()
+        self.dice_set = None  # TODO: create a new DiceSet with 5 dice of 6 sides each
+        self.highest_total = None  # TODO: initialize the highest total to the initial dice sum
 
     def run_command(self, command):
         """
@@ -147,30 +144,7 @@ class HighRollerGame():
         * Don't use `input()` here! The input has already been read and passed to this method.
         * Implementing `quit`? See the `exit()` function imported above.
         """
-        match command.split():
-            case ["h" | "help"]:
-                print(
-                    "Commands: h or help, q or quit, use <s> <n>, roll all, roll <i>, high or highest")
-            case ["q" | "quit"]:
-                print("Thanks for playing!")
-                exit(0)
-            case ["use", sides_each_die, number_of_dice]:
-                self.dice_set = DiceSet(
-                    int(sides_each_die), int(number_of_dice))
-                print(self.dice_set.get_descriptor())
-                print(self.dice_set)
-            case ["roll", "all"]:
-                print(self.dice_set.roll_all())
-                print(self.dice_set)
-            case ["roll", index]:
-                self.dice_set.roll_die(int(index))
-                print(self.dice_set)
-            case ["high" | "highest"]:
-                print(self.highest_total)
-            case _:
-                print("Invalid command")
-        if self.dice_set.get_total() > self.highest_total:
-            self.highest_total = self.dice_set.get_total()
+        pass
 
     def play(self):
         """
