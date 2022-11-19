@@ -1,4 +1,4 @@
-name: DiceSet Class Tests
+name: Unit Tests
 
 on: [push]
 
